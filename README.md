@@ -1,4 +1,6 @@
-finnishpop
-==========
+finnishpop.py
+=============
 
-Scraper to tweet the population of Finland
+Scraper to tweet the population of Finland.
+
+https://twitter.com/finnishpop
