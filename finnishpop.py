@@ -5,7 +5,7 @@ Scraper to tweet the population of Finland
 """
 from __future__ import print_function
 import argparse
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup  # pip install BeautifulSoup4
 import re
 import sys
 import twitter
