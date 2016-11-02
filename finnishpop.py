@@ -20,7 +20,7 @@ HELSINKI_LONG = 24.9375
 def population():
     url = "http://vrk.fi/"
     page = urllib2.urlopen(url)
-    soup = BeautifulSoup(page.read())
+    soup = BeautifulSoup(page.read(), "lxml")
 
     # <div class="population-banner">
     #     <a href="/default.aspx?site=3&amp;docid=169">
@@ -29,12 +29,26 @@ def population():
     #     </a>
     # </div>
 
-    banner_div = soup.find_all("div", class_="population-banner")[0]
-    population = banner_div.p.text
+    # <div class="portlet-boundary portlet-boundary_populationdisplay_WAR_populationdisplayportlet_ portlet-static portlet-static-end portlet-borderless population-display-portlet " id="p_p_id_populationdisplay_WAR_populationdisplayportlet_">
+    #   <span id="p_populationdisplay_WAR_populationdisplayportlet"></span>
+    #   <div class="portlet-borderless-container" style="">
+    #     <div class="portlet-body">
+    #       <p><span><em>Suomen</em> väkiluku</span> 5&nbsp;507&nbsp;187</p>
+    #     </div>
+    #   </div>
+    # </div>
+
+    banner_div = soup.find_all("div", class_="population-display-portlet")[0]
+    population = banner_div.div.div.p
+    # get rid of <span> and contents
+    population.span.decompose()
+    # strip leading space, replace non-breaking space with standard space
+    population = population.text.strip().replace(u'\xa0', " ")
     print(population)
     return population
 
 
+# TODO call it
 def validate(pop):
     if not pop:
         return False
@@ -110,7 +124,7 @@ if __name__ == "__main__":
         help="Don't open a web browser to show the tweeted tweet")
     parser.add_argument(
         '-x', '--test', action='store_true',
-        help="Test mode: go through the motions but don't add any photos")
+        help="Test mode: go through the motions but don't tweet anything")
     args = parser.parse_args()
 
     pop = population()
