@@ -24,4 +24,4 @@ script:
 
  # Test run
  - python finnishpop.py --help
- - python finnishpop.py --test
+ - python finnishpop.py --test --yaml finnishpop_example.yaml
