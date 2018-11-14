@@ -29,7 +29,7 @@ def population():
     #     </a>
     # </div>
 
-    # <div class="portlet-boundary portlet-boundary_populationdisplay_WAR_populationdisplayportlet_ portlet-static portlet-static-end portlet-borderless population-display-portlet " id="p_p_id_populationdisplay_WAR_populationdisplayportlet_">
+    # <div class="portlet-boundary portlet-boundary_populationdisplay_WAR_populationdisplayportlet_ portlet-static portlet-static-end portlet-borderless population-display-portlet " id="p_p_id_populationdisplay_WAR_populationdisplayportlet_"> # noqa: E501
     #   <span id="p_populationdisplay_WAR_populationdisplayportlet"></span>
     #   <div class="portlet-borderless-container" style="">
     #     <div class="portlet-body">
