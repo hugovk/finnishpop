@@ -3,15 +3,15 @@
 """
 Scraper to tweet the population of Finland
 """
-from __future__ import print_function
 import argparse
-from bs4 import BeautifulSoup  # pip install BeautifulSoup4
 import re
 import sys
-import twitter
-import urllib2
+import urllib
 import webbrowser
+
+import twitter
 import yaml
+from bs4 import BeautifulSoup  # pip install BeautifulSoup4
 
 HELSINKI_LAT = 60.170833
 HELSINKI_LONG = 24.9375
@@ -19,7 +19,7 @@ HELSINKI_LONG = 24.9375
 
 def population():
     url = "http://vrk.fi/"
-    page = urllib2.urlopen(url)
+    page = urllib.request.urlopen(url)
     soup = BeautifulSoup(page.read(), "lxml")
 
     # <div class="population-banner">
@@ -43,7 +43,7 @@ def population():
     # get rid of <span> and contents
     population.span.decompose()
     # strip leading space, replace non-breaking space with standard space
-    population = population.text.strip().replace(u'\xa0', " ")
+    population = population.text.strip().replace('\xa0', " ")
     print(population)
     return population
 
@@ -70,7 +70,7 @@ def load_yaml(filename):
     f = open(filename)
     data = yaml.safe_load(f)
     f.close()
-    if not data.viewkeys() >= {
+    if not data.keys() >= {
             'oauth_token', 'oauth_token_secret',
             'consumer_key', 'consumer_secret'}:
         sys.exit("Twitter credentials missing from YAML: " + filename)
