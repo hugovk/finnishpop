@@ -43,7 +43,7 @@ def population():
     # get rid of <span> and contents
     population.span.decompose()
     # strip leading space, replace non-breaking space with standard space
-    population = population.text.strip().replace('\xa0', " ")
+    population = population.text.strip().replace("\xa0", " ")
     print(population)
     return population
 
@@ -54,7 +54,7 @@ def validate(pop):
         return False
     elif len(pop) < 7:  # population is at least 5000000
         return False
-    elif re.match(r'\d[\d ]+\d', pop):
+    elif re.match(r"\d[\d ]+\d", pop):
         return True
     return False
 
@@ -71,8 +71,11 @@ def load_yaml(filename):
     data = yaml.safe_load(f)
     f.close()
     if not data.keys() >= {
-            'oauth_token', 'oauth_token_secret',
-            'consumer_key', 'consumer_secret'}:
+        "oauth_token",
+        "oauth_token_secret",
+        "consumer_key",
+        "consumer_secret",
+    }:
         sys.exit("Twitter credentials missing from YAML: " + filename)
     return data
 
@@ -89,11 +92,14 @@ def tweet_it(string, credentials):
     # Create and authorise an app with (read and) write access at:
     # https://dev.twitter.com/apps/new
     # Store credentials in YAML file
-    t = twitter.Twitter(auth=twitter.OAuth(
-        credentials['oauth_token'],
-        credentials['oauth_token_secret'],
-        credentials['consumer_key'],
-        credentials['consumer_secret']))
+    t = twitter.Twitter(
+        auth=twitter.OAuth(
+            credentials["oauth_token"],
+            credentials["oauth_token_secret"],
+            credentials["consumer_key"],
+            credentials["consumer_secret"],
+        )
+    )
 
     print("TWEETING THIS:\n", string)
 
@@ -102,10 +108,16 @@ def tweet_it(string, credentials):
     else:
         result = t.statuses.update(
             status=string,
-            lat=HELSINKI_LAT, long=HELSINKI_LONG,
-            display_coordinates=True)
-        url = "http://twitter.com/" + \
-            result['user']['screen_name'] + "/status/" + result['id_str']
+            lat=HELSINKI_LAT,
+            long=HELSINKI_LONG,
+            display_coordinates=True,
+        )
+        url = (
+            "http://twitter.com/"
+            + result["user"]["screen_name"]
+            + "/status/"
+            + result["id_str"]
+        )
         print("Tweeted:\n" + url)
         if not args.no_web:
             webbrowser.open(url, new=2)  # 2 = open in a new tab, if possible
@@ -114,17 +126,26 @@ def tweet_it(string, credentials):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Scraper to tweet the population of Finland",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     parser.add_argument(
-        '-y', '--yaml',
-        default='/Users/hugo/Dropbox/bin/data/finnishpop.yaml',
-        help="YAML file location containing Twitter keys and secrets")
+        "-y",
+        "--yaml",
+        default="/Users/hugo/Dropbox/bin/data/finnishpop.yaml",
+        help="YAML file location containing Twitter keys and secrets",
+    )
     parser.add_argument(
-        '-nw', '--no-web', action='store_true',
-        help="Don't open a web browser to show the tweeted tweet")
+        "-nw",
+        "--no-web",
+        action="store_true",
+        help="Don't open a web browser to show the tweeted tweet",
+    )
     parser.add_argument(
-        '-x', '--test', action='store_true',
-        help="Test mode: go through the motions but don't tweet anything")
+        "-x",
+        "--test",
+        action="store_true",
+        help="Test mode: go through the motions but don't tweet anything",
+    )
     args = parser.parse_args()
 
     pop = population()
